@@ -1,0 +1,295 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局样式 */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
+      Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-size: 14px;
+  }
+
+  /* 暗色模式基础样式 */
+  .dark {
+    color-scheme: dark;
+  }
+
+  /* 浅色模式基础样式 */
+  html:not(.dark) {
+    color-scheme: light;
+  }
+}
+
+/* CodeMirror 样式自定义 */
+@layer components {
+  /* 编辑器滚动条 */
+  .cm-editor {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+  }
+
+  .cm-editor .cm-scroller {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+  }
+
+  /* 自定义滚动条 */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(156, 163, 175, 0.7);
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(71, 85, 105, 0.5);
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(71, 85, 105, 0.7);
+  }
+
+  /* 预览区滚动条 */
+  .prose ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .prose ::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 5px;
+  }
+}
+
+/* 动画效果 */
+@layer utilities {
+  .animate-in {
+    animation: enter 0.2s ease-out;
+  }
+
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .zoom-in-95 {
+    animation: zoomIn 0.2s ease-out;
+  }
+
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.95);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+}
+
+/* 打印样式 */
+@media print {
+  body {
+    overflow: visible;
+  }
+
+  header,
+  footer,
+  .toolbar,
+  .status-bar {
+    display: none !important;
+  }
+
+  main {
+    margin: 0;
+    padding: 0;
+    height: auto;
+  }
+
+  .preview {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .prose {
+    max-width: 100%;
+  }
+
+  /* 隐藏编辑器，只显示预览 */
+  .editor-pane {
+    display: none;
+  }
+}
+
+/* Prose 样式增强 */
+@layer components {
+  .prose {
+    font-size: 14px;
+    line-height: 1.75;
+    color: rgb(55 65 81);
+  }
+
+  .dark .prose {
+    color: rgb(226 232 240);
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .prose p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+
+  .prose ul,
+  .prose ol {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 1.625em;
+  }
+
+  .prose li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+}
+
+/* 代码块高亮样式覆盖 */
+pre code.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* 任务列表样式 */
+.prose input[type='checkbox'] {
+  margin-right: 0.5em;
+  accent-color: #2563eb;
+}
+
+.dark .prose input[type='checkbox'] {
+  accent-color: #3b82f6;
+}
+
+/* 表格样式增强 */
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.prose th,
+.prose td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.prose tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dark .prose tr {
+  border-bottom-color: #334155;
+}
+
+/* 链接样式 */
+.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: #1d4ed8;
+}
+
+.dark .prose a {
+  color: #3b82f6;
+}
+
+.dark .prose a:hover {
+  color: #2563eb;
+}
+
+/* 引用样式 */
+.prose blockquote {
+  border-left: 4px solid #2563eb;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #4b5563;
+}
+
+.dark .prose blockquote {
+  border-left-color: #3b82f6;
+  color: #9ca3af;
+}
+
+/* 分隔线样式 */
+.prose hr {
+  border-color: #e5e7eb;
+  margin: 2rem 0;
+}
+
+.dark .prose hr {
+  border-color: #334155;
+}
+
+/* 代码内联样式 */
+.prose code:not(pre code) {
+  background-color: #f3f4f6;
+  color: #dc2626;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.dark .prose code:not(pre code) {
+  background-color: #1e293b;
+  color: #f87171;
+}
