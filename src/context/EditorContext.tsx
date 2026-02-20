@@ -1,19 +1,17 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
-import { EditorContextType, CursorPosition, ViewMode, ThemeMode } from '../types/editor';
+import type { EditorContextType, CursorPosition, ViewMode, ThemeMode } from '../types/editor';
 
 // 默认初始状态
 const defaultState: EditorContextType = {
   markdown: '# ZenMark Editor\n\n欢迎使用 ZenMark Editor！\n\n## 功能特性\n\n- 实时预览\n- 语法高亮\n- 同步滚动\n- 主题切换\n\n开始你的写作之旅吧！\n\n```javascript\nconsole.log("Hello, ZenMark!");\n```',
   title: '无标题文档',
   theme: 'dark',
-  focusMode: false,
   viewMode: 'split',
   splitPosition: 50,
   cursor: { line: 1, column: 1 },
   setMarkdown: () => {},
   setTitle: () => {},
   toggleTheme: () => {},
-  toggleFocusMode: () => {},
   setViewMode: () => {},
   setSplitPosition: () => {},
   setCursor: () => {},
@@ -36,7 +34,6 @@ const STORAGE_KEYS = {
   MARKDOWN: 'zenmark-editor-content',
   TITLE: 'zenmark-editor-title',
   THEME: 'zenmark-editor-theme',
-  FOCUS_MODE: 'zenmark-editor-focus-mode',
   SPLIT_POSITION: 'zenmark-editor-split-position',
 } as const;
 
@@ -72,14 +69,6 @@ export function EditorProvider({ children }: EditorProviderProps) {
     }
   });
 
-  const [focusMode, setFocusModeState] = useState(() => {
-    try {
-      return localStorage.getItem(STORAGE_KEYS.FOCUS_MODE) === 'true';
-    } catch {
-      return false;
-    }
-  });
-
   const [splitPosition, setSplitPositionState] = useState(() => {
     try {
       return parseInt(localStorage.getItem(STORAGE_KEYS.SPLIT_POSITION) || '50', 10);
@@ -105,10 +94,6 @@ export function EditorProvider({ children }: EditorProviderProps) {
   }, [theme]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.FOCUS_MODE, focusMode.toString());
-  }, [focusMode]);
-
-  useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.SPLIT_POSITION, splitPosition.toString());
   }, [splitPosition]);
 
@@ -132,10 +117,6 @@ export function EditorProvider({ children }: EditorProviderProps) {
 
   const toggleTheme = useCallback(() => {
     setThemeState(prev => prev === 'light' ? 'dark' : 'light');
-  }, []);
-
-  const toggleFocusMode = useCallback(() => {
-    setFocusModeState(prev => !prev);
   }, []);
 
   const setViewMode = useCallback((mode: ViewMode) => {
@@ -228,14 +209,12 @@ export function EditorProvider({ children }: EditorProviderProps) {
     markdown,
     title,
     theme,
-    focusMode,
     viewMode,
     splitPosition,
     cursor,
     setMarkdown,
     setTitle,
     toggleTheme,
-    toggleFocusMode,
     setViewMode,
     setSplitPosition,
     setCursor,

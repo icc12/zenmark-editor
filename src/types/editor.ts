@@ -6,16 +6,15 @@ export type ThemeMode = 'light' | 'dark';
 
 export type ViewMode = 'split' | 'editor' | 'preview';
 
-export interface CursorPosition {
+export type CursorPosition = {
   line: number;
   column: number;
-}
+};
 
 export interface EditorState {
   markdown: string;           // Markdown 内容
   title: string;              // 文档标题
   theme: ThemeMode;           // 主题模式
-  focusMode: boolean;         // 专注模式
   viewMode: ViewMode;         // 视图模式（移动端用）
   splitPosition: number;      // 分屏位置（百分比，30-70）
   cursor: CursorPosition;     // 光标位置
@@ -25,7 +24,6 @@ export interface EditorActions {
   setMarkdown: (text: string) => void;      // 设置内容
   setTitle: (title: string) => void;         // 设置标题
   toggleTheme: () => void;                   // 切换主题
-  toggleFocusMode: () => void;               // 切换专注模式
   setViewMode: (mode: ViewMode) => void;     // 设置视图模式
   setSplitPosition: (position: number) => void; // 设置分屏位置
   setCursor: (position: CursorPosition) => void; // 设置光标位置

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
   Bold,
   Italic,
@@ -12,10 +12,7 @@ import {
   Copy,
   Download,
   Printer,
-  Focus,
-  X,
-  Moon,
-  Sun
+  FolderOpen,
 } from 'lucide-react';
 import { useEditor } from '../context/EditorContext';
 import { Modal } from './Modal';
@@ -32,8 +29,6 @@ export function Toolbar() {
     setTitle,
     markdown,
     toggleTheme,
-    focusMode,
-    toggleFocusMode,
     setMarkdown,
     exportPDF
   } = useEditor();
@@ -41,6 +36,7 @@ export function Toolbar() {
   const [insertImageModal, setInsertImageModal] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 格式化按钮配置
   const formatButtons = [
@@ -52,6 +48,24 @@ export function Toolbar() {
     { icon: Quote, label: '引用', format: 'quote' },
     { icon: Code, label: '代码', format: 'code' },
   ];
+
+  // 打开文件处理
+  const handleOpenFile = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target?.result as string;
+        setMarkdown(content);
+        setTitle(file.name.replace('.md', '').replace('.txt', ''));
+      };
+      reader.readAsText(file);
+    }
+  };
 
   // 插入格式
   const handleFormat = (format: string) => {
@@ -99,12 +113,11 @@ export function Toolbar() {
     <>
       {/* 顶部工具栏 */}
       <header
-        className={`
+        className="
           fixed top-0 left-0 right-0 h-[50px] flex items-center px-4 gap-3
           bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700
-          transition-transform duration-300 z-40
-          ${focusMode ? '-translate-y-full' : ''}
-        `}
+          z-40
+        "
       >
         {/* Logo */}
         <div className="flex items-center gap-2 mr-4">
@@ -146,6 +159,27 @@ export function Toolbar() {
             );
           })}
         </div>
+
+        {/* 分隔线 */}
+        <div className="w-px h-6 bg-gray-300 dark:bg-slate-700 mx-2" />
+
+        {/* 打开文件按钮 */}
+        <button
+          onClick={handleOpenFile}
+          className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+          title="打开文件"
+        >
+          <FolderOpen className="w-4 h-4 text-gray-700 dark:text-slate-300" />
+        </button>
+
+        {/* 隐藏的文件输入框 */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".md,.txt,.markdown"
+          onChange={handleFileChange}
+          className="hidden"
+        />
 
         {/* 分隔线 */}
         <div className="w-px h-6 bg-gray-300 dark:bg-slate-700 mx-2" />
@@ -222,22 +256,6 @@ export function Toolbar() {
 
         {/* 主题切换 */}
         <ThemeToggle />
-
-        {/* 专注模式按钮 */}
-        <button
-          onClick={toggleFocusMode}
-          className={`
-            p-2 rounded-lg transition-colors
-            ${focusMode ? 'bg-blue-100 dark:bg-blue-900' : 'hover:bg-gray-200 dark:hover:bg-slate-700'}
-          `}
-          title={focusMode ? '退出专注模式' : '专注模式'}
-        >
-          {focusMode ? (
-            <X className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-          ) : (
-            <Focus className="w-4 h-4 text-gray-700 dark:text-slate-300" />
-          )}
-        </button>
       </header>
 
       {/* 插入图片模态框 */}

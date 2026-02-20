@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { markdown } from '@codemirror/lang-markdown';
+import { markdown as markdownExtension } from '@codemirror/lang-markdown';
 import { EditorView } from '@codemirror/view';
 import { useEditor as useEditorContext } from '../context/EditorContext';
 
@@ -80,7 +80,7 @@ export function Editor() {
         height="100%"
         theme={customTheme}
         extensions={[
-          markdown(),
+          markdownExtension(),
           EditorView.lineWrapping,
         ]}
         onChange={handleEditorChange}

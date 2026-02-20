@@ -7,7 +7,7 @@ import { StatusBar } from './components/StatusBar';
 import { ResizableSplit } from './components/ResizableSplit';
 import { useDebounce } from './hooks/useDebounce';
 import { useScrollSync } from './hooks/useScrollSync';
-import { Upload, Eye, Edit3 } from 'lucide-react';
+import { Upload, Eye, Edit3, X } from 'lucide-react';
 
 /**
  * 主应用内容组件
@@ -17,7 +17,6 @@ function AppContent() {
     markdown,
     setMarkdown,
     theme,
-    focusMode,
     viewMode,
     splitPosition,
     setSplitPosition,
@@ -128,11 +127,7 @@ function AppContent() {
 
       {/* 主内容区 */}
       <main
-        className={`
-          h-[calc(100vh-50px-30px)] mt-[50px]
-          transition-all duration-300
-          ${focusMode ? 'mt-0 h-screen' : ''}
-        `}
+        className="h-[calc(100vh-50px-30px)] mt-[50px]"
       >
         {isMobile ? (
           // 移动端标签页模式
@@ -197,12 +192,7 @@ function AppContent() {
       </main>
 
       {/* 底部状态栏 */}
-      <div
-        className={`
-          fixed bottom-0 left-0 right-0 transition-transform duration-300 z-40
-          ${focusMode ? 'translate-y-full' : ''}
-        `}
-      >
+      <div className="fixed bottom-0 left-0 right-0 z-40">
         <StatusBar />
       </div>
     </div>

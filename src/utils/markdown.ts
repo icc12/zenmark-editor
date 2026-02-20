@@ -1,4 +1,4 @@
-import { FormatType } from '../types/editor';
+import type { FormatType } from '../types/editor';
 
 /**
  * Markdown 格式映射
